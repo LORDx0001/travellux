@@ -1,0 +1,604 @@
+{% extends 'travel/base.html' %}
+{% load static %}
+
+{% block title %}О нас - TravelLux{% endblock %}
+
+{% block content %}
+    <!-- Заголовок страницы -->
+    <section class="hero" style="padding: 120px 0 60px;">
+        <div class="container">
+            <div class="hero-content">
+                <h1>О TravelLux</h1>
+                <p>Ваш надежный партнер в мире незабываемых путешествий</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- О компании -->
+    <section class="section">
+        <div class="container">
+            <div class="grid grid-2" style="align-items: center; gap: 4rem;">
+                <div>
+                    <h2 class="mb-4">Мы создаем путешествия мечты</h2>
+                    <p class="mb-3" style="font-size: 1.2rem; color: var(--primary-color); font-weight: 500;">
+                        Более 10 лет мы помогаем людям открывать мир и создавать незабываемые воспоминания
+                    </p>
+                    <p class="mb-3">
+                        TravelLux — это команда профессионалов, которые специализируются на организации уникальных путешествий по всему миру. 
+                        Мы тщательно отбираем каждый тур, работаем только с проверенными партнерами и гарантируем высочайший уровень сервиса.
+                    </p>
+                    <p class="mb-4">
+                        Наша миссия — сделать путешествия доступными, безопасными и максимально комфортными для каждого клиента. 
+                        От романтических поездок до семейных приключений — мы найдем идеальный вариант именно для вас.
+                    </p>
+                    <div class="grid grid-2" style="gap: 1rem;">
+                        <div style="text-align: center; padding: 1rem; border: 2px solid var(--primary-color); border-radius: 8px;">
+                            <div style="font-size: 2rem; color: var(--primary-color); margin-bottom: 0.5rem;">✈️</div>
+                            <div style="font-weight: bold;">1000+</div>
+                            <div style="font-size: 12px; color: #666;">Успешных туров</div>
+                        </div>
+                        <div style="text-align: center; padding: 1rem; border: 2px solid var(--secondary-color); border-radius: 8px;">
+                            <div style="font-size: 2rem; color: var(--secondary-color); margin-bottom: 0.5rem;">🌍</div>
+                            <div style="font-weight: bold;">50+</div>
+                            <div style="font-size: 12px; color: #666;">Стран мира</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <div style="width: 400px; height: 400px; background: var(--gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; position: relative; overflow: hidden;">
+                        <div style="position: absolute; top: 20%; left: 20%; width: 60px; height: 60px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: float 6s ease-in-out infinite;">
+                            ✈️
+                        </div>
+                        <div style="position: absolute; top: 60%; right: 20%; width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: float 6s ease-in-out infinite 2s;">
+                            🏔️
+                        </div>
+                        <div style="position: absolute; bottom: 20%; left: 30%; width: 50px; height: 50px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: float 6s ease-in-out infinite 4s;">
+                            🏖️
+                        </div>
+                        <i class="fas fa-globe-americas" style="font-size: 120px; color: white; opacity: 0.3;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Статистика -->
+    <section class="section bg-white">
+        <div class="container">
+            <div class="section-header">
+                <h2>Наши достижения</h2>
+                <p>Цифры, которые говорят о нашем профессионализме</p>
+            </div>
+            <div class="grid grid-4">
+                <div class="card text-center achievement-card">
+                    <div class="card-content">
+                        <div class="achievement-icon-wrapper">
+                            <i class="fas fa-clock achievement-icon" style="font-size: 30px; color: white;"></i>
+                        </div>
+                        <div class="achievement-number" data-target="10">0+</div>
+                        <div class="achievement-label">лет опыта</div>
+                    </div>
+                </div>
+                <div class="card text-center achievement-card">
+                    <div class="card-content">
+                        <div class="achievement-icon-wrapper">
+                            <i class="fas fa-route achievement-icon" style="font-size: 30px; color: white;"></i>
+                        </div>
+                        <div class="achievement-number" data-target="500">0+</div>
+                        <div class="achievement-label">уникальных туров</div>
+                    </div>
+                </div>
+                <div class="card text-center achievement-card">
+                    <div class="card-content">
+                        <div class="achievement-icon-wrapper">
+                            <i class="fas fa-smile achievement-icon" style="font-size: 30px; color: white;"></i>
+                        </div>
+                        <div class="achievement-number" data-target="15000">0+</div>
+                        <div class="achievement-label">довольных клиентов</div>
+                    </div>
+                </div>
+                <div class="card text-center achievement-card">
+                    <div class="card-content">
+                        <div class="achievement-icon-wrapper">
+                            <i class="fas fa-globe achievement-icon" style="font-size: 30px; color: white;"></i>
+                        </div>
+                        <div class="achievement-number" data-target="50">0+</div>
+                        <div class="achievement-label">стран мира</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Наша команда -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Наша команда</h2>
+                <p>Профессионалы, которые воплощают ваши мечты в реальность</p>
+            </div>
+            <div class="grid grid-3">
+                <div class="card text-center team-card">
+                    <div class="card-content">
+                        <div class="team-avatar">
+                            <div class="avatar-bg">
+                                <i class="fas fa-user-tie" style="font-size: 50px; color: white;"></i>
+                            </div>
+                            <div class="avatar-ring"></div>
+                        </div>
+                        <h3 class="mb-2">Анна Иванова</h3>
+                        <div style="color: var(--primary-color); font-weight: 600; margin-bottom: 0.5rem;">Генеральный директор</div>
+                        <p class="text-light">Опыт в туризме более 15 лет. Эксперт по международным направлениям.</p>
+                    </div>
+                </div>
+                <div class="card text-center team-card">
+                    <div class="card-content">
+                        <div class="team-avatar">
+                            <div class="avatar-bg">
+                                <i class="fas fa-map-marked-alt" style="font-size: 50px; color: white;"></i>
+                            </div>
+                            <div class="avatar-ring"></div>
+                        </div>
+                        <h3 class="mb-2">Михаил Петров</h3>
+                        <div style="color: var(--primary-color); font-weight: 600; margin-bottom: 0.5rem;">Менеджер по турам</div>
+                        <p class="text-light">Специалист по европейским направлениям с 10-летним стажем.</p>
+                    </div>
+                </div>
+                <div class="card text-center team-card">
+                    <div class="card-content">
+                        <div class="team-avatar">
+                            <div class="avatar-bg">
+                                <i class="fas fa-compass" style="font-size: 50px; color: white;"></i>
+                            </div>
+                            <div class="avatar-ring"></div>
+                        </div>
+                        <h3 class="mb-2">Елена Сидорова</h3>
+                        <div style="color: var(--primary-color); font-weight: 600; margin-bottom: 0.5rem;">Консультант</div>
+                        <p class="text-light">Эксперт по экзотическим направлениям и индивидуальным турам.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Почему выбирают нас -->
+    <section class="section bg-white">
+        <div class="container">
+            <div class="section-header">
+                <h2>Почему выбирают TravelLux</h2>
+                <p>Наши преимущества делают путешествия с нами особенными</p>
+            </div>
+            <div class="grid grid-2">
+                <div class="card">
+                    <div class="card-content">
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                            <div style="width: 60px; height: 60px; background: var(--gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-shield-alt" style="color: white; font-size: 20px;"></i>
+                            </div>
+                            <h3>Безопасность</h3>
+                        </div>
+                        <p class="text-light">Все наши туры застрахованы, партнеры проверены, маршруты безопасны.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                            <div style="width: 60px; height: 60px; background: var(--gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-headset" style="color: white; font-size: 20px;"></i>
+                            </div>
+                            <h3>Поддержка 24/7</h3>
+                        </div>
+                        <p class="text-light">Наша служба поддержки работает круглосуточно во время ваших поездок.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                            <div style="width: 60px; height: 60px; background: var(--gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-money-bill-wave" style="color: white; font-size: 20px;"></i>
+                            </div>
+                            <h3>Лучшие цены</h3>
+                        </div>
+                        <p class="text-light">Прямые договоры с отелями и авиакомпаниями позволяют предлагать выгодные цены.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                            <div style="width: 60px; height: 60px; background: var(--gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-user-friends" style="color: white; font-size: 20px;"></i>
+                            </div>
+                            <h3>Индивидуальный подход</h3>
+                        </div>
+                        <p class="text-light">Каждый тур адаптируется под ваши пожелания и бюджет.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Контакты -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Свяжитесь с нами</h2>
+                <p>Мы всегда готовы помочь вам спланировать идеальное путешествие</p>
+            </div>
+            <div class="grid grid-2" style="gap: 4rem;">
+                <div>
+                    <div class="card mb-4">
+                        <div class="card-content">
+                            <h3 class="mb-4">Контактная информация</h3>
+                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                                <div style="width: 50px; height: 50px; background: var(--primary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-phone" style="color: white;"></i>
+                                </div>
+                                <div>
+                                    <h4>Телефон</h4>
+                                    <p style="margin: 0; color: #666;">+7 (495) 123-45-67</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                                <div style="width: 50px; height: 50px; background: var(--primary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-envelope" style="color: white;"></i>
+                                </div>
+                                <div>
+                                    <h4>Email</h4>
+                                    <p style="margin: 0; color: #666;">info@travellux.ru</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                                <div style="width: 50px; height: 50px; background: var(--primary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-map-marker-alt" style="color: white;"></i>
+                                </div>
+                                <div>
+                                    <h4>Адрес</h4>
+                                    <p style="margin: 0; color: #666;">Москва, ул. Тверская, д. 15</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="width: 50px; height: 50px; background: var(--primary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-clock" style="color: white;"></i>
+                                </div>
+                                <div>
+                                    <h4>Время работы</h4>
+                                    <p style="margin: 0; color: #666;">Пн-Пт: 9:00-18:00<br>Сб: 10:00-16:00</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="card">
+                        <div class="card-content">
+                            <h3 class="mb-4">Напишите нам</h3>
+                            <form onsubmit="sendMessage(event)">
+                                <div class="form-group">
+                                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Ваше имя</label>
+                                    <input type="text" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Email</label>
+                                    <input type="email" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Тема</label>
+                                    <select class="form-control">
+                                        <option>Общий вопрос</option>
+                                        <option>Бронирование тура</option>
+                                        <option>Индивидуальный тур</option>
+                                        <option>Жалоба</option>
+                                        <option>Предложение</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Сообщение</label>
+                                    <textarea class="form-control" rows="5" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary" style="width: 100%;">Отправить сообщение</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function sendMessage(event) {
+            event.preventDefault();
+            
+            const notification = document.createElement('div');
+            notification.innerHTML = `
+                <div style="position: fixed; top: 100px; right: 20px; background: var(--primary-color); color: white; padding: 15px 20px; border-radius: 8px; z-index: 10000; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                    ✅ Сообщение отправлено! Мы свяжемся с вами в ближайшее время.
+                </div>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+            
+            event.target.reset();
+        }
+
+        // Анимация счетчиков
+        function animateCounter(element, target, duration = 2000) {
+            let start = 0;
+            let startTime = null;
+            
+            function step(currentTime) {
+                if (!startTime) startTime = currentTime;
+                const progress = Math.min((currentTime - startTime) / duration, 1);
+                
+                const current = Math.floor(progress * target);
+                element.textContent = current.toLocaleString();
+                
+                if (progress < 1) {
+                    requestAnimationFrame(step);
+                }
+            }
+            
+            requestAnimationFrame(step);
+        }
+
+        // Анимация появления элементов
+        document.addEventListener('DOMContentLoaded', function() {
+            // Анимация счетчиков достижений
+            const achievementCards = document.querySelectorAll('.achievement-card');
+            const counterObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const numberElement = entry.target.querySelector('.achievement-number');
+                        const target = parseInt(numberElement.dataset.target);
+                        
+                        // Запускаем анимацию счетчика только один раз
+                        if (!numberElement.classList.contains('counted')) {
+                            numberElement.classList.add('counted');
+                            animateCounter(numberElement, target);
+                        }
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            achievementCards.forEach(card => {
+                counterObserver.observe(card);
+            });
+            
+            // Существующая анимация появления карточек
+            const cards = document.querySelectorAll('.card');
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
+        });
+    </script>
+
+    <style>
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Achievement Cards Animations */
+        .achievement-card {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .achievement-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(52, 152, 219, 0.3);
+        }
+        
+        .achievement-icon-wrapper {
+            width: 120px;
+            height: 120px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            position: relative;
+            transition: all 0.4s ease;
+            overflow: hidden;
+        }
+        
+        .achievement-icon-wrapper:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 15px 30px rgba(52, 152, 219, 0.4);
+        }
+        
+        .achievement-icon-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+        
+        .achievement-card:hover .achievement-icon-wrapper::before {
+            opacity: 1;
+            animation: shimmer 1.5s ease-in-out;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+        
+        .achievement-icon {
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .achievement-card:hover .achievement-icon {
+            transform: scale(1.2);
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3));
+        }
+        
+        .achievement-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 0.5rem 0;
+            transition: all 0.3s ease;
+        }
+        
+        .achievement-card:hover .achievement-number {
+            transform: scale(1.1);
+            text-shadow: 0 2px 5px rgba(52, 152, 219, 0.3);
+        }
+        
+        .achievement-label {
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+        
+        /* Team Cards Animations */
+        .team-card {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(52, 152, 219, 0.2);
+        }
+        
+        .team-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(52, 152, 219, 0.1), transparent);
+            transition: all 0.6s ease;
+        }
+        
+        .team-card:hover::before {
+            left: 100%;
+        }
+        
+        .team-avatar {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1rem;
+        }
+        
+        .avatar-bg {
+            width: 120px;
+            height: 120px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .avatar-ring {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            width: 130px;
+            height: 130px;
+            border: 3px solid var(--primary-color);
+            border-radius: 50%;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.4s ease;
+        }
+        
+        .team-card:hover .avatar-bg {
+            transform: scale(1.1);
+            box-shadow: 0 10px 25px rgba(52, 152, 219, 0.4);
+        }
+        
+        .team-card:hover .avatar-ring {
+            opacity: 1;
+            transform: scale(1);
+            animation: pulse-ring 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-ring {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.7; }
+        }
+        
+        .team-card:hover .avatar-bg i {
+            transform: scale(1.2) rotate(10deg);
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3));
+        }
+        
+        /* Counter Animation */
+        .counter-animation {
+            display: inline-block;
+        }
+        
+        /* Loading Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .achievement-card, .team-card {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        
+        .achievement-card:nth-child(1) { animation-delay: 0.1s; }
+        .achievement-card:nth-child(2) { animation-delay: 0.2s; }
+        .achievement-card:nth-child(3) { animation-delay: 0.3s; }
+        .achievement-card:nth-child(4) { animation-delay: 0.4s; }
+        
+        .team-card:nth-child(1) { animation-delay: 0.2s; }
+        .team-card:nth-child(2) { animation-delay: 0.4s; }
+        .team-card:nth-child(3) { animation-delay: 0.6s; }
+    </style>
+{% endblock %}

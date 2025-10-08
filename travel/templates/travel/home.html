@@ -1,0 +1,408 @@
+{% extends 'travel/base.html' %}
+{% load static %}
+
+{% block title %}TravelLux - Незабываемые путешествия{% endblock %}
+
+{% block content %}
+<!-- Hero секция -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1>Откройте мир с TravelLux</h1>
+            <p>Незабываемые путешествия по самым красивым местам планеты. Создаем воспоминания на всю жизнь!</p>
+            <a href="{% url 'catalog' %}" class="btn btn-primary">Выбрать тур</a>
+            <a href="{% url 'about' %}" class="btn btn-secondary">Узнать больше</a>
+        </div>
+    </div>
+</section>
+
+<!-- Популярные туры -->
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">Популярные направления</h2>
+        <p class="section-subtitle">Самые востребованные туры от наших клиентов</p>
+        
+        <div class="grid grid-3">
+            {% for tour in featured_tours %}
+            <div class="card fade-in">
+                {% if tour.image %}
+                    <img src="{{ tour.image.url }}" alt="{{ tour.title }}" class="card-img">
+                {% else %}
+                    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=250&fit=crop" alt="{{ tour.title }}" class="card-img">
+                {% endif %}
+                <div class="card-content">
+                    <h3 class="card-title">{{ tour.title }}</h3>
+                    <p class="card-text">{{ tour.description|truncatewords:15 }}</p>
+                    <div class="card-price">от {{ tour.price|floatformat:0 }} ₽</div>
+                    <a href="{% url 'tour_detail' tour.pk %}" class="btn btn-primary">Подробнее</a>
+                </div>
+            </div>
+            {% empty %}
+            <!-- Статические карточки если нет туров в базе -->
+            <div class="card fade-in">
+                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=250&fit=crop" alt="Норвегия" class="card-img">
+                <div class="card-content">
+                    <h3 class="card-title">Норвегия: Северное сияние</h3>
+                    <p class="card-text">7 дней незабываемых впечатлений среди фьордов и северного сияния</p>
+                    <div class="card-price">от 89 900 ₽</div>
+                    <a href="{% url 'catalog' %}" class="btn btn-primary">Подробнее</a>
+                </div>
+            </div>
+
+            <div class="card fade-in">
+                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=250&fit=crop" alt="Мальдивы" class="card-img">
+                <div class="card-content">
+                    <h3 class="card-title">Мальдивы: Райские острова</h3>
+                    <p class="card-text">10 дней релакса на белоснежных пляжах с кристально чистой водой</p>
+                    <div class="card-price">от 159 900 ₽</div>
+                    <a href="{% url 'catalog' %}" class="btn btn-primary">Подробнее</a>
+                </div>
+            </div>
+
+            <div class="card fade-in">
+                <img src="https://images.unsplash.com/photo-1473181488821-2d23949a045a?w=400&h=250&fit=crop" alt="Япония" class="card-img">
+                <div class="card-content">
+                    <h3 class="card-title">Япония: Сакура и традиции</h3>
+                    <p class="card-text">14 дней погружения в культуру Страны восходящего солнца</p>
+                    <div class="card-price">от 119 900 ₽</div>
+                    <a href="{% url 'catalog' %}" class="btn btn-primary">Подробнее</a>
+                </div>
+            </div>
+
+            <div class="card fade-in">
+                <img src="https://pohcdn.com/sites/default/files/styles/big_gallery_image/public/text_gallery/Iceland-5.jpg" alt="Исландия" class="card-img">
+                <div class="card-content">
+                    <h3 class="card-title">Исландия: Земля льда и огня</h3>
+                    <p class="card-text">8 дней среди гейзеров, водопадов и ледников</p>
+                    <div class="card-price">от 99 900 ₽</div>
+                    <a href="{% url 'catalog' %}" class="btn btn-primary">Подробнее</a>
+                </div>
+            </div>
+
+            <div class="card fade-in">
+                <img src="https://images.unsplash.com/photo-1544984243-ec57ea16fe25?w=400&h=250&fit=crop" alt="Швейцария" class="card-img">
+                <div class="card-content">
+                    <h3 class="card-title">Швейцария: Альпийские вершины</h3>
+                    <p class="card-text">6 дней в горах с захватывающими видами и чистым воздухом</p>
+                    <div class="card-price">от 79 900 ₽</div>
+                    <a href="{% url 'catalog' %}" class="btn btn-primary">Подробнее</a>
+                </div>
+            </div>
+
+            <div class="card fade-in">
+                <img src="https://images.unsplash.com/photo-1493780474015-ba834fd0ce2f?w=400&h=250&fit=crop" alt="Тайланд" class="card-img">
+                <div class="card-content">
+                    <h3 class="card-title">Тайланд: Тропический рай</h3>
+                    <p class="card-text">12 дней экзотики, пляжей и удивительной кухни</p>
+                    <div class="card-price">от 69 900 ₽</div>
+                    <a href="{% url 'catalog' %}" class="btn btn-primary">Подробнее</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Преимущества -->
+<section class="section bg-white">
+    <div class="container">
+        <h2 class="section-title">Почему выбирают нас?</h2>
+        <div class="grid grid-3">
+            <div class="text-center slide-in-left">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>
+                <h3 class="mb-2">Индивидуальный подход</h3>
+                <p class="text-light">Каждый тур создается с учетом ваших пожеланий и интересов</p>
+            </div>
+            <div class="text-center">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🛡️</div>
+                <h3 class="mb-2">Гарантия качества</h3>
+                <p class="text-light">100% гарантия возврата средств в случае отмены по нашей вине</p>
+            </div>
+            <div class="text-center slide-in-right">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🌟</div>
+                <h3 class="mb-2">Экспертность</h3>
+                <p class="text-light">Более 10 лет опыта в организации путешествий по всему миру</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Отзывы -->
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">Отзывы наших клиентов</h2>
+        <div class="grid grid-2">
+            <div class="card">
+                <div class="card-content">
+                    <div style="font-size: 1.5rem; color: var(--secondary-color); margin-bottom: 1rem;">⭐⭐⭐⭐⭐</div>
+                    <p class="card-text">"Невероятное путешествие в Норвегию! Организация на высшем уровне, все было продумано до мелочей. Обязательно вернемся к TravelLux за новыми приключениями!"</p>
+                    <div class="text-primary font-weight-bold">— Анна Петрова</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <div style="font-size: 1.5rem; color: var(--secondary-color); margin-bottom: 1rem;">⭐⭐⭐⭐⭐</div>
+                    <p class="card-text">"Мальдивы превзошли все ожидания! Отель, трансферы, экскурсии - все было идеально. Спасибо команде TravelLux за незабываемый медовый месяц!"</p>
+                    <div class="text-primary font-weight-bold">— Михаил и Елена Соколовы</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Подписка на новости -->
+<section class="newsletter-section">
+    <div class="container text-center">
+        <div class="newsletter-content">
+            <h2 class="newsletter-title">Будьте в курсе лучших предложений</h2>
+            <p class="newsletter-subtitle">Подпишитесь на нашу рассылку и получайте эксклюзивные скидки до 40%</p>
+            <div class="newsletter-form">
+                <input type="email" placeholder="Введите ваш email" class="newsletter-input" id="newsletter-email">
+                <button class="newsletter-btn" onclick="subscribeNewsletter()">
+                    <span class="btn-text">Подписаться</span>
+                    <span class="btn-icon">✈️</span>
+                </button>
+            </div>
+            <p class="newsletter-note">🔒 Мы не передаем ваши данные третьим лицам</p>
+        </div>
+    </div>
+</section>
+
+<style>
+    .newsletter-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 80px 0;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .newsletter-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="80" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        animation: float 20s infinite linear;
+    }
+    
+    @keyframes float {
+        0% { transform: translateX(0) translateY(0); }
+        25% { transform: translateX(-10px) translateY(-5px); }
+        50% { transform: translateX(10px) translateY(-10px); }
+        75% { transform: translateX(-5px) translateY(-5px); }
+        100% { transform: translateX(0) translateY(0); }
+    }
+    
+    .newsletter-content {
+        position: relative;
+        z-index: 2;
+    }
+    
+    .newsletter-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 1rem;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        animation: fadeInUp 1s ease-out;
+    }
+    
+    .newsletter-subtitle {
+        font-size: 1.2rem;
+        color: rgba(255,255,255,0.9);
+        margin-bottom: 2.5rem;
+        animation: fadeInUp 1s ease-out 0.2s both;
+    }
+    
+    .newsletter-form {
+        max-width: 450px;
+        margin: 0 auto 1.5rem;
+        display: flex;
+        gap: 1rem;
+        animation: fadeInUp 1s ease-out 0.4s both;
+    }
+    
+    .newsletter-input {
+        flex: 1;
+        padding: 15px 20px;
+        border: none;
+        border-radius: 50px;
+        font-size: 16px;
+        background: rgba(255,255,255,0.95);
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .newsletter-input:focus {
+        outline: none;
+        background: white;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    
+    .newsletter-input::placeholder {
+        color: #666;
+    }
+    
+    .newsletter-btn {
+        background: linear-gradient(45deg, #ff6b6b, #ffa500);
+        border: none;
+        border-radius: 50px;
+        padding: 15px 30px;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(255,107,107,0.4);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        white-space: nowrap;
+    }
+    
+    .newsletter-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: left 0.5s ease;
+    }
+    
+    .newsletter-btn:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 10px 25px rgba(255,107,107,0.6);
+    }
+    
+    .newsletter-btn:hover::before {
+        left: 100%;
+    }
+    
+    .newsletter-btn:active {
+        transform: translateY(-1px) scale(1.02);
+    }
+    
+    .btn-icon {
+        transition: transform 0.3s ease;
+    }
+    
+    .newsletter-btn:hover .btn-icon {
+        transform: translateX(5px);
+    }
+    
+    .newsletter-note {
+        color: rgba(255,255,255,0.8);
+        font-size: 14px;
+        animation: fadeInUp 1s ease-out 0.6s both;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .newsletter-title {
+            font-size: 2rem;
+        }
+        
+        .newsletter-form {
+            flex-direction: column;
+            max-width: 300px;
+        }
+        
+        .newsletter-btn {
+            justify-content: center;
+        }
+    }
+</style>
+
+<script>
+    function subscribeNewsletter() {
+        const email = document.getElementById('newsletter-email').value;
+        const btn = document.querySelector('.newsletter-btn');
+        
+        if (!email) {
+            showNotification('Пожалуйста, введите email', 'error');
+            return;
+        }
+        
+        if (!isValidEmail(email)) {
+            showNotification('Пожалуйста, введите корректный email', 'error');
+            return;
+        }
+        
+        // Анимация загрузки
+        btn.innerHTML = '<span class="btn-text">Подписываем...</span><span class="btn-icon">⏳</span>';
+        btn.style.pointerEvents = 'none';
+        
+        // Имитация отправки
+        setTimeout(() => {
+            btn.innerHTML = '<span class="btn-text">Подписан!</span><span class="btn-icon">✅</span>';
+            document.getElementById('newsletter-email').value = '';
+            showNotification('Спасибо за подписку! Проверьте ваш email.', 'success');
+            
+            setTimeout(() => {
+                btn.innerHTML = '<span class="btn-text">Подписаться</span><span class="btn-icon">✈️</span>';
+                btn.style.pointerEvents = 'auto';
+            }, 2000);
+        }, 1500);
+    }
+    
+    function isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+    
+    function showNotification(message, type) {
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            z-index: 10000;
+            animation: slideIn 0.3s ease-out;
+            background: ${type === 'success' ? 'linear-gradient(45deg, #4CAF50, #45a049)' : 'linear-gradient(45deg, #f44336, #d32f2f)'};
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        `;
+        notification.textContent = message;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.animation = 'slideOut 0.3s ease-out';
+            setTimeout(() => notification.remove(), 300);
+        }, 3000);
+    }
+    
+    // CSS для анимации уведомлений
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+    `;
+    document.head.appendChild(style);
+</script>
+{% endblock %}

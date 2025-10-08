@@ -1,0 +1,737 @@
+{% extends 'travel/base.html' %}
+{% load static %}
+
+{% block title %}Каталог туров - TravelLux{% endblock %}
+
+{% block content %}
+    <style>
+        .catalog-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 120px 0 120px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .catalog-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="white" opacity="0.1"/><circle cx="80" cy="80" r="3" fill="white" opacity="0.1"/><circle cx="40" cy="60" r="1" fill="white" opacity="0.1"/></svg>');
+            animation: float 15s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        .catalog-hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+        }
+        
+        .catalog-hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            animation: slideInDown 1s ease-out;
+        }
+        
+        .catalog-hero p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            animation: slideInUp 1s ease-out 0.3s both;
+        }
+        
+                .filters-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            padding: 40px;
+            position: relative;
+            z-index: 10;
+            transform: translateY(50px);
+            opacity: 0;
+            transition: all 0.6s ease;
+        }
+        
+        .filters-section {
+            padding-top: 80px;
+            padding-bottom: 40px;
+        }
+        
+        .filters-layout {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .filters-left {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .search-title h3 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, var(--primary-color), #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .search-title p {
+            font-size: 1.2rem;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .filter-form {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 0;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 12px 16px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            background: white;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            transform: translateY(-2px);
+        }
+        
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding-top: 20px;
+            margin-top: 0;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .tours-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+        
+        .tour-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .tour-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+        }
+        
+        .tour-image-container {
+            position: relative;
+            overflow: hidden;
+            height: 250px;
+        }
+        
+        .tour-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        
+        .tour-card:hover .tour-image {
+            transform: scale(1.1);
+        }
+        
+        .tour-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.7) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .tour-card:hover .tour-overlay {
+            opacity: 1;
+        }
+        
+        .tour-badges {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            z-index: 2;
+        }
+        
+        .tour-badge {
+            background: var(--secondary-color);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .tour-content {
+            padding: 25px;
+        }
+        
+        .tour-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #333;
+            line-height: 1.3;
+        }
+        
+        .tour-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .tour-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+        
+        .detail-item {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .detail-icon {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            display: block;
+        }
+        
+        .detail-text {
+            font-size: 12px;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .tour-price {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .price-current {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .price-old {
+            font-size: 1rem;
+            color: #999;
+            text-decoration: line-through;
+            margin-left: 10px;
+        }
+        
+        .tour-btn {
+            width: 100%;
+            background: linear-gradient(45deg, var(--primary-color), #8b5cf6);
+            border: none;
+            border-radius: 12px;
+            padding: 15px;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            z-index: 10;
+            pointer-events: auto !important;
+        }
+        
+        .tour-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .tour-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .tour-btn:hover::before {
+            left: 100%;
+        }
+        
+        .tour-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: #666;
+        }
+        
+        .empty-icon {
+            font-size: 5rem;
+            margin-bottom: 2rem;
+            color: #ddd;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+        
+        .filter-btn {
+            background: linear-gradient(45deg, var(--primary-color), #8b5cf6);
+            border: none;
+            border-radius: 12px;
+            padding: 12px 30px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 10px;
+        }
+        
+        .filter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .filter-btn.secondary {
+            background: #6c757d;
+        }
+        
+        .filter-btn.secondary:hover {
+            background: #5a6268;
+            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);
+        }
+        
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .catalog-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .filters-layout {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .search-title h3 {
+                font-size: 2rem;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .filter-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .filter-btn {
+                width: 100%;
+            }
+            
+            .tours-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .filter-form {
+                padding: 20px;
+            }
+            
+            .tour-details {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+
+    <!-- Заголовок каталога -->
+    <section class="catalog-hero">
+        <div class="container">
+            <div class="catalog-hero-content">
+                <h1>🌍 Каталог туров</h1>
+                <p>Откройте для себя удивительные места и незабываемые приключения</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Фильтры -->
+    <section class="section filters-section">
+        <div class="container">
+            <div class="filters-container">
+                <div class="filters-layout">
+                    <!-- Левая часть с заголовком -->
+                    <div class="filters-left">
+                        <div class="search-title">
+                            <h3>🔍 Найдите идеальный тур</h3>
+                            <p>Откройте для себя удивительные места и незабываемые приключения</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Правая часть с формой -->
+                    <div class="filters-right">
+                        <form method="GET" class="filter-form" id="filter-form">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">🔎 Поиск</label>
+                                    <input type="text" name="search" class="form-control" placeholder="Название тура..." value="{{ current_search }}">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">🌍 Направление</label>
+                                    <select name="destination" class="form-control">
+                                        <option value="">Все направления</option>
+                                        {% for destination in destinations %}
+                                            <option value="{{ destination.id }}" {% if current_destination == destination.id|stringformat:"s" %}selected{% endif %}>
+                                                {{ destination.name }}, {{ destination.country }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">🎯 Тип тура</label>
+                                    <select name="type" class="form-control">
+                                        <option value="">Все типы</option>
+                                        {% for type_code, type_name in tour_types %}
+                                            <option value="{{ type_code }}" {% if current_type == type_code %}selected{% endif %}>
+                                                {{ type_name }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">⏱️ Длительность</label>
+                                    <select name="duration" class="form-control">
+                                        <option value="">Любая</option>
+                                        <option value="short" {% if current_duration == 'short' %}selected{% endif %}>1-7 дней</option>
+                                        <option value="medium" {% if current_duration == 'medium' %}selected{% endif %}>8-14 дней</option>
+                                        <option value="long" {% if current_duration == 'long' %}selected{% endif %}>15+ дней</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Кнопки снизу -->
+                <div class="filter-buttons">
+                    <button type="submit" form="filter-form" class="filter-btn">✨ Применить фильтры</button>
+                    <a href="{% url 'catalog' %}" class="filter-btn secondary">🔄 Сбросить</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Каталог туров -->
+    <section class="section">
+        <div class="container">
+            {% if tours %}
+                <div class="tours-grid" id="tours-container">
+                    {% for tour in tours %}
+                    <div class="tour-card" data-index="{{ forloop.counter0 }}">
+                        <div class="tour-image-container">
+                            {% if tour.image %}
+                                <img src="{{ tour.image.url }}" alt="{{ tour.title }}" class="tour-image">
+                            {% else %}
+                                <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-mountain" style="font-size: 60px; color: white; opacity: 0.8;"></i>
+                                </div>
+                            {% endif %}
+                            <div class="tour-overlay"></div>
+                            
+                            {% if tour.has_discount %}
+                                <div class="tour-badges">
+                                    <span class="tour-badge">🔥 -{{ tour.discount_percent }}% СКИДКА</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="tour-content">
+                            <h3 class="tour-title">{{ tour.title }}</h3>
+                            <p class="tour-description">{{ tour.description|truncatewords:15 }}</p>
+                            
+                            <div class="tour-details">
+                                <div class="detail-item">
+                                    <span class="detail-icon">🌍</span>
+                                    <span class="detail-text">{{ tour.destination.country }}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-icon">📅</span>
+                                    <span class="detail-text">{{ tour.duration_days }} дн.</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-icon">👥</span>
+                                    <span class="detail-text">до {{ tour.max_people }} чел.</span>
+                                </div>
+                            </div>
+                            
+                            <div class="tour-price">
+                                <div>
+                                    <span class="price-current">{{ tour.price }} ₽</span>
+                                    {% if tour.old_price %}
+                                        <span class="price-old">{{ tour.old_price }} ₽</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            {% if user.is_authenticated %}
+                                <form method="POST" action="{% url 'add_to_cart' tour.pk %}" style="margin: 0;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="people_count" value="1">
+                                    <input type="hidden" name="start_date" value="2025-06-01">
+                                    <button type="submit" class="tour-btn">
+                                        🛒 Добавить в корзину
+                                    </button>
+                                </form>
+                            {% else %}
+                                <a href="{% url 'auth' %}" class="tour-btn" style="display: block; text-align: center; text-decoration: none;">
+                                    🔐 Войти для заказа
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <div class="empty-icon">🔍</div>
+                    <h3 style="font-size: 2rem; margin-bottom: 1rem;">Туры не найдены</h3>
+                    <p style="font-size: 1.2rem; margin-bottom: 2rem;">Попробуйте изменить параметры поиска</p>
+                    <a href="{% url 'catalog' %}" class="filter-btn">🔄 Сбросить фильтры</a>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <script>
+        // Анимация появления карточек при прокрутке
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const index = parseInt(entry.target.getAttribute('data-index'));
+                    setTimeout(() => {
+                        entry.target.style.animation = 'fadeInScale 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
+                    }, index * 100); // Задержка между анимациями карточек
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Инициализация анимаций
+        document.addEventListener('DOMContentLoaded', function() {
+            // Скрываем карточки изначально
+            document.querySelectorAll('.tour-card').forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'scale(0.8)';
+                observer.observe(card);
+            });
+
+            // Анимация фильтров
+            const filtersContainer = document.querySelector('.filters-container');
+            if (filtersContainer) {
+                setTimeout(() => {
+                    filtersContainer.style.transform = 'translateY(0)';
+                    filtersContainer.style.opacity = '1';
+                }, 300);
+            }
+        });
+
+        // Обработка добавления в корзину
+        document.querySelectorAll('form[action*="add-to-cart"]').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                const btn = this.querySelector('.tour-btn');
+                if (btn.disabled) {
+                    e.preventDefault();
+                    return false;
+                }
+                
+                const originalText = btn.innerHTML;
+                
+                btn.innerHTML = '⏳ Добавляем...';
+                btn.disabled = true;
+                btn.style.pointerEvents = 'none';
+                
+                // Восстанавливаем кнопку через 2 секунды
+                setTimeout(() => {
+                    btn.innerHTML = '✅ Добавлено!';
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                        btn.disabled = false;
+                        btn.style.pointerEvents = 'auto';
+                    }, 1000);
+                }, 1500);
+            });
+        });
+
+        // Дополнительная обработка для кнопок входа
+        document.querySelectorAll('a[href*="auth"]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (this.style.pointerEvents === 'none') {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+        });
+
+        // Уведомления
+        {% if messages %}
+            {% for message in messages %}
+                if ('{{ message.tags }}' === 'success') {
+                    showNotification('✅ {{ message }}', 'success');
+                }
+            {% endfor %}
+        {% endif %}
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 25px;
+                border-radius: 12px;
+                color: white;
+                font-weight: 600;
+                z-index: 10000;
+                animation: slideInRight 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                background: ${type === 'success' ? 'linear-gradient(45deg, #4CAF50, #45a049)' : 'linear-gradient(45deg, #f44336, #d32f2f)'};
+                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+                backdrop-filter: blur(10px);
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.5s ease-in forwards';
+                setTimeout(() => notification.remove(), 500);
+            }, 3000);
+        }
+
+        // CSS для анимации уведомлений
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOutRight {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+{% endblock %}

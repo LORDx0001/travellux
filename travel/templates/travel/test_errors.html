@@ -1,0 +1,107 @@
+{% extends 'travel/base.html' %}
+{% load static %}
+
+{% block title %}Тестирование страниц ошибок - TravelLux{% endblock %}
+
+{% block content %}
+    <section class="hero" style="padding: 120px 0 60px;">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Тестирование страниц ошибок</h1>
+                <p>Проверка различных типов ошибок на сайте</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="grid grid-3">
+                <div class="card">
+                    <div class="card-content text-center">
+                        <div style="font-size: 4rem; margin-bottom: 1rem; color: var(--primary-color);">404</div>
+                        <h3 class="mb-2">Страница не найдена</h3>
+                        <p class="text-light mb-3">Тестирование страницы для несуществующих URL</p>
+                        <a href="{% url 'test_404' %}" class="btn btn-primary">Посмотреть 404</a>
+                        <br><br>
+                        <a href="/несуществующая-страница/" class="btn btn-secondary">Реальная 404</a>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-content text-center">
+                        <div style="font-size: 4rem; margin-bottom: 1rem; color: #e74c3c;">500</div>
+                        <h3 class="mb-2">Ошибка сервера</h3>
+                        <p class="text-light mb-3">Тестирование страницы для серверных ошибок</p>
+                        <a href="{% url 'test_500' %}" class="btn" style="background: #e74c3c; color: white;">Посмотреть 500</a>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-content text-center">
+                        <div style="font-size: 4rem; margin-bottom: 1rem; color: #f39c12;">403</div>
+                        <h3 class="mb-2">Доступ запрещен</h3>
+                        <p class="text-light mb-3">Тестирование страницы для ограниченного доступа</p>
+                        <a href="{% url 'test_403' %}" class="btn" style="background: #f39c12; color: white;">Посмотреть 403</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section bg-white">
+        <div class="container">
+            <div class="section-header">
+                <h2>Информация о страницах ошибок</h2>
+                <p>Как работают кастомные страницы ошибок в Django</p>
+            </div>
+            
+            <div class="grid grid-2">
+                <div class="card">
+                    <div class="card-content">
+                        <h3 class="mb-3">🎨 Дизайн-особенности</h3>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">✨ Анимированные иконки и элементы</li>
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">🎨 Градиентные фоны для каждого типа ошибки</li>
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">📱 Адаптивный дизайн для всех устройств</li>
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">🔗 Быстрые ссылки для навигации</li>
+                            <li style="padding: 0.5rem 0;">🌟 Интерактивные элементы и переходы</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-content">
+                        <h3 class="mb-3">⚙️ Технические детали</h3>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">🔧 Кастомные обработчики в urls.py</li>
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">📄 Отдельные шаблоны для каждой ошибки</li>
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">🎯 Правильные HTTP статус-коды</li>
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">🔒 Безопасная обработка ошибок</li>
+                            <li style="padding: 0.5rem 0;">📊 Логирование и отслеживание</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .card {
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .btn {
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+    </style>
+{% endblock %}

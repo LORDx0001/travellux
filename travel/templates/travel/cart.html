@@ -1,0 +1,265 @@
+{% extends 'travel/base.html' %}
+{% load static %}
+
+{% block title %}Корзина - TravelLux{% endblock %}
+
+{% block content %}
+    <!-- Заголовок страницы -->
+    <section class="hero" style="padding: 120px 0 60px;">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Корзина</h1>
+                <p>Проверьте выбранные туры и оформите заказ</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Содержимое корзины -->
+    <section class="section">
+        <div class="container">
+            {% if cart_items %}
+                <div class="grid" style="grid-template-columns: 1fr 400px; gap: 2rem; align-items: start;">
+                    <div>
+                        <h2 class="mb-4">Выбранные туры</h2>
+                        <div class="card">
+                            <div class="card-content">
+                                {% for item in cart_items %}
+                                <div class="cart-item-row" style="display: flex; align-items: center; gap: 1rem; padding: 1.5rem 0; {% if not forloop.last %}border-bottom: 1px solid #e9ecef;{% endif %}">
+                                    <div style="flex-shrink: 0;">
+                                        {% if item.tour.image %}
+                                            <img src="{{ item.tour.image.url }}" alt="{{ item.tour.title }}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
+                                        {% else %}
+                                            <div style="width: 80px; height: 80px; background: var(--gradient); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                                <i class="fas fa-mountain" style="color: white; font-size: 24px;"></i>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <h4 style="margin-bottom: 0.5rem;">{{ item.tour.title }}</h4>
+                                        <div style="color: #666; font-size: 14px;">
+                                            <div style="margin-bottom: 0.25rem;">
+                                                <i class="fas fa-map-marker-alt"></i> {{ item.tour.destination }}
+                                            </div>
+                                            <div style="margin-bottom: 0.25rem;">
+                                                <i class="fas fa-calendar"></i> Дата: {{ item.start_date }}
+                                            </div>
+                                            <div>
+                                                <i class="fas fa-users"></i> Количество: {{ item.people_count }} чел.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="text-align: right;">
+                                        <div style="font-size: 14px; color: #666; margin-bottom: 0.25rem;">{{ item.tour.price }} ₽ × {{ item.people_count }}</div>
+                                        <div style="font-size: 18px; font-weight: bold; color: var(--primary-color);">{{ item.total_price }} ₽</div>
+                                    </div>
+                                    <div style="flex-shrink: 0;">
+                                        <a href="{% url 'remove_from_cart' item.pk %}" class="btn" style="background: var(--secondary-color); color: white; padding: 8px 12px; border-radius: 6px;" onclick="return confirm('Удалить тур из корзины?')">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="text-center" style="margin-top: 1.5rem;">
+                            <a href="{% url 'clear_cart' %}" class="btn btn-secondary" onclick="return confirm('Очистить всю корзину?')">Очистить корзину</a>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="card">
+                            <div class="card-content">
+                                <h3 class="mb-4">Итого</h3>
+                                <div style="border-bottom: 1px solid #e9ecef; padding-bottom: 1rem; margin-bottom: 1rem;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <span>Туры ({{ cart_items|length }} шт.)</span>
+                                        <span>{{ total }} ₽</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <span>Скидка</span>
+                                        <span style="color: var(--secondary-color);">-{{ discount }} ₽</span>
+                                    </div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; font-size: 1.25rem; font-weight: bold; margin-bottom: 1.5rem;">
+                                    <span>К оплате:</span>
+                                    <span style="color: var(--primary-color);">{{ final_total }} ₽</span>
+                                </div>
+                                <button class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;" onclick="proceedToCheckout()">Оформить заказ</button>
+                                <a href="{% url 'catalog' %}" class="btn btn-secondary" style="width: 100%; display: block; text-align: center;">Продолжить покупки</a>
+                            </div>
+                        </div>
+                        
+                        <div class="card" style="margin-top: 1.5rem;">
+                            <div class="card-content">
+                                <h4 class="mb-2">🎁 Промокод</h4>
+                                <div style="display: flex; gap: 10px;">
+                                    <input type="text" placeholder="Введите промокод" class="form-control" id="promo-input">
+                                    <button class="btn btn-secondary" onclick="applyPromo()">Применить</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="text-center">
+                    <div style="font-size: 4rem; margin-bottom: 2rem;">🛒</div>
+                    <h2 class="mb-4">Корзина пуста</h2>
+                    <p class="text-light mb-4">Добавьте туры из каталога, чтобы начать планировать свое путешествие</p>
+                    <a href="{% url 'catalog' %}" class="btn btn-primary">Выбрать туры</a>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <script>
+        function applyPromo() {
+            const promoInput = document.getElementById('promo-input');
+            const promoCode = promoInput.value.trim().toUpperCase();
+            
+            const validCodes = {
+                'WELCOME10': 10,
+                'SUMMER20': 20,
+                'TRAVEL15': 15,
+                'FIRSTTRIP': 25
+            };
+            
+            if (validCodes[promoCode]) {
+                const notification = document.createElement('div');
+                notification.innerHTML = `
+                    <div style="position: fixed; top: 100px; right: 20px; background: var(--primary-color); color: white; padding: 15px 20px; border-radius: 8px; z-index: 10000; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                        ✅ Промокод применен! Скидка ${validCodes[promoCode]}%
+                    </div>
+                `;
+                document.body.appendChild(notification);
+                promoInput.value = '';
+                
+                setTimeout(() => {
+                    notification.remove();
+                }, 3000);
+            } else if (promoCode) {
+                const notification = document.createElement('div');
+                notification.innerHTML = `
+                    <div style="position: fixed; top: 100px; right: 20px; background: var(--secondary-color); color: white; padding: 15px 20px; border-radius: 8px; z-index: 10000; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                        ❌ Неверный промокод
+                    </div>
+                `;
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.remove();
+                }, 3000);
+            }
+        }
+
+        function proceedToCheckout() {
+            // Создаем модальное окно для оформления заказа
+            const modal = document.createElement('div');
+            modal.innerHTML = `
+                <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px;">
+                    <div class="card" style="max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto;">
+                        <div class="card-content">
+                            <h3 class="mb-4">Оформление заказа</h3>
+                            <form onsubmit="submitOrder(event)">
+                                <div class="form-group">
+                                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Имя</label>
+                                    <input type="text" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Фамилия</label>
+                                    <input type="text" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Email</label>
+                                    <input type="email" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Телефон</label>
+                                    <input type="tel" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Дата вылета</label>
+                                    <input type="date" class="form-control" required>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 2rem;">
+                                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Комментарий</label>
+                                    <textarea class="form-control" rows="3" placeholder="Особые пожелания..."></textarea>
+                                </div>
+                                <div style="display: flex; gap: 1rem;">
+                                    <button type="submit" class="btn btn-primary" style="flex: 1;">Подтвердить заказ</button>
+                                    <button type="button" class="btn btn-secondary" onclick="closeModal()" style="flex: 1;">Отмена</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            modal.querySelector('input').focus();
+            
+            window.closeModal = function() {
+                modal.remove();
+            };
+            
+            window.submitOrder = function(e) {
+                e.preventDefault();
+                const notification = document.createElement('div');
+                notification.innerHTML = `
+                    <div style="position: fixed; top: 100px; right: 20px; background: var(--primary-color); color: white; padding: 15px 20px; border-radius: 8px; z-index: 10000; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                        🎉 Заказ успешно оформлен! Мы свяжемся с вами в ближайшее время.
+                    </div>
+                `;
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.remove();
+                    window.location.href = "{% url 'home' %}";
+                }, 3000);
+                
+                modal.remove();
+            };
+        }
+
+        // Анимация появления элементов
+        document.addEventListener('DOMContentLoaded', function() {
+            const cartItems = document.querySelectorAll('.cart-item-row');
+            cartItems.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                
+                setTimeout(() => {
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+
+    <style>
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr !important;
+            }
+            
+            .cart-item-row {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 1rem !important;
+                text-align: left !important;
+            }
+            
+            .cart-item-row > div {
+                width: 100% !important;
+                text-align: left !important;
+            }
+            
+            .cart-item-row > div:last-child {
+                text-align: center !important;
+            }
+        }
+    </style>
+{% endblock %}

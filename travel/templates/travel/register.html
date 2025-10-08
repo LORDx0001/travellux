@@ -1,0 +1,85 @@
+{% extends 'travel/base.html' %}
+{% load static %}
+
+{% block title %}Регистрация - TravelLux{% endblock %}
+
+{% block content %}
+    <section class="hero" style="padding: 120px 0 60px;">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Регистрация</h1>
+                <p>Создайте аккаунт для бронирования туров</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div style="max-width: 400px; margin: 0 auto;">
+                <div class="card">
+                    <div class="card-content">
+                        <h2 class="text-center mb-4">Создать аккаунт</h2>
+                        
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                        
+                        <form method="POST">
+                            {% csrf_token %}
+                            
+                            <div class="form-group">
+                                <label for="username">Имя пользователя:</label>
+                                <input type="text" name="username" id="username" class="form-control" maxlength="150" required>
+                                <div class="text-light" style="font-size: 12px; margin-top: 5px;">
+                                    Не более 150 символов. Только буквы, цифры и символы @/./+/-/_
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="password1">Пароль:</label>
+                                <input type="password" name="password1" id="password1" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="password2">Подтвердите пароль:</label>
+                                <input type="password" name="password2" id="password2" class="form-control" required>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">Зарегистрироваться</button>
+                        </form>
+                        
+                        <div class="text-center mt-3">
+                            <p><a href="{% url 'auth' %}">Уже есть аккаунт? Войти</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <style>
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .alert {
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+        }
+        
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+    </style>
+{% endblock %}

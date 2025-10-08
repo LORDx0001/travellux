@@ -1,0 +1,218 @@
+{% extends 'travel/base.html' %}
+{% load static %}
+
+{% block title %}Авторизация - TravelLux{% endblock %}
+
+{% block content %}
+    <style>
+        .auth-wrapper {
+            max-width: 450px;
+            margin: 0 auto;
+        }
+        
+        .auth-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 5px;
+            margin-bottom: 2rem;
+        }
+        
+        .tab-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .auth-form {
+            display: none;
+        }
+        
+        .auth-form.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .error {
+            color: var(--secondary-color);
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
+
+    <!-- Заголовок страницы -->
+    <section class="hero" style="padding: 120px 0 60px;">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Добро пожаловать</h1>
+                <p>Войдите в свой аккаунт или создайте новый для бронирования туров</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Форма авторизации -->
+    <section class="section">
+        <div class="container">
+            <div class="auth-wrapper">
+                <div class="auth-tabs">
+                    <button class="tab-btn active" onclick="showTab('login')">Вход</button>
+                    <button class="tab-btn" onclick="showTab('register')">Регистрация</button>
+                </div>
+                
+                <!-- Login Form -->
+                <div id="login-tab" class="auth-form active">
+                    <h2 class="text-center mb-4">Вход в систему</h2>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="login" value="1">
+                        {% if request.GET.next %}
+                            <input type="hidden" name="next" value="{{ request.GET.next }}">
+                        {% endif %}
+                        <div class="form-group">
+                            <label for="id_username">Имя пользователя</label>
+                            <input type="text" name="username" class="form-control" id="id_username" maxlength="150" required>
+                            {% if login_form.username.errors %}
+                                <div class="error">{{ login_form.username.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_password">Пароль</label>
+                            <input type="password" name="password" class="form-control" id="id_password" required>
+                            {% if login_form.password.errors %}
+                                <div class="error">{{ login_form.password.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        {% if login_form.non_field_errors %}
+                            <div class="error mb-3">{{ login_form.non_field_errors.0 }}</div>
+                        {% endif %}
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Войти</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <p class="text-light">Нет аккаунта? <a href="#" onclick="showTab('register')" class="text-primary">Зарегистрируйтесь</a></p>
+                    </div>
+                </div>
+                
+                <!-- Register Form -->
+                <div id="register-tab" class="auth-form">
+                    <h2 class="text-center mb-4">Создать аккаунт</h2>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="register" value="1">
+                        {% if request.GET.next %}
+                            <input type="hidden" name="next" value="{{ request.GET.next }}">
+                        {% endif %}
+                        <div class="form-group">
+                            <label for="reg_username">Имя пользователя</label>
+                            <input type="text" name="username" class="form-control" id="reg_username" maxlength="150" required>
+                            {% if register_form.username.errors %}
+                                <div class="error">{{ register_form.username.errors.0 }}</div>
+                            {% endif %}
+                            <div class="text-light" style="font-size: 12px; margin-top: 5px;">
+                                Не более 150 символов. Только буквы, цифры и символы @/./+/-/_
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="reg_password1">Пароль</label>
+                            <input type="password" name="password1" class="form-control" id="reg_password1" required>
+                            {% if register_form.password1.errors %}
+                                <div class="error">{{ register_form.password1.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="reg_password2">Подтвердите пароль</label>
+                            <input type="password" name="password2" class="form-control" id="reg_password2" required>
+                            {% if register_form.password2.errors %}
+                                <div class="error">{{ register_form.password2.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Зарегистрироваться</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <p class="text-light">Уже есть аккаунт? <a href="#" onclick="showTab('login')" class="text-primary">Войдите</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Преимущества регистрации -->
+    <section class="section bg-white">
+        <div class="container">
+            <div class="section-header">
+                <h2>Преимущества регистрации</h2>
+                <p>Откройте для себя больше возможностей с аккаунтом TravelLux</p>
+            </div>
+            <div class="grid grid-3">
+                <div class="card text-center">
+                    <div class="card-content">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>
+                        <h3>Персональные предложения</h3>
+                        <p class="text-light">Получайте туры, подобранные специально для вас</p>
+                    </div>
+                </div>
+                <div class="card text-center">
+                    <div class="card-content">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">💰</div>
+                        <h3>Эксклюзивные скидки</h3>
+                        <p class="text-light">Доступ к специальным ценам и акциям для зарегистрированных пользователей</p>
+                    </div>
+                </div>
+                <div class="card text-center">
+                    <div class="card-content">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📱</div>
+                        <h3>Управление бронированием</h3>
+                        <p class="text-light">Отслеживайте свои заказы и управляйте поездками в личном кабинете</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.auth-form').forEach(form => {
+                form.style.display = 'none';
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').style.display = 'block';
+            document.querySelector(`[onclick="showTab('${tabName}')"]`).classList.add('active');
+        }
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // По умолчанию показываем форму входа
+            showTab('login');
+            
+            // Анимация появления элементов
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100 + 500);
+            });
+        });
+    </script>
+{% endblock %}

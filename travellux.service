@@ -1,0 +1,19 @@
+[Unit]
+Description=TravelLux Django App
+Requires=gunicorn.socket
+After=network.target
+
+[Service]
+Type=notify
+User=www-data
+Group=www-data
+RuntimeDirectory=gunicorn
+WorkingDirectory=/path/to/Alina2
+ExecStart=/path/to/Alina2/.venv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/run/gunicorn/socket travelux.wsgi:application
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=mixed
+TimeoutStopSec=5
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
