@@ -111,16 +111,25 @@
     </footer>
 
     <script>
-        // Мобильное меню с улучшенной анимацией
-        document.addEventListener('DOMContentLoaded', function() {
+        // Глобальная инициализация мобильного меню
+        function initMobileNavigation() {
             const navToggle = document.querySelector('.nav-toggle');
             const navMenu = document.querySelector('.nav-menu');
             
             if (navToggle && navMenu) {
-                navToggle.addEventListener('click', function() {
+                // Удаляем старые обработчики если есть
+                navToggle.removeEventListener('click', navToggle._clickHandler);
+                
+                // Создаем новый обработчик
+                navToggle._clickHandler = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Toggle clicked'); // Для отладки
                     navMenu.classList.toggle('active');
                     navToggle.classList.toggle('active');
-                });
+                };
+                
+                navToggle.addEventListener('click', navToggle._clickHandler);
                 
                 // Закрытие меню при клике на ссылку
                 const navLinks = document.querySelectorAll('.nav-link');
@@ -138,8 +147,18 @@
                         navToggle.classList.remove('active');
                     }
                 });
+                
+                console.log('Mobile navigation initialized'); // Для отладки
+            } else {
+                console.log('Navigation elements not found'); // Для отладки
             }
-        });
+        }
+        
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', initMobileNavigation);
+        
+        // Повторная инициализация через небольшую задержку (для страниц с конфликтами)
+        setTimeout(initMobileNavigation, 100);
 
         // Плавный скролл для ссылок
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {

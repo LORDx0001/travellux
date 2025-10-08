@@ -682,38 +682,8 @@
     </section>
 
     <script>
-        // Инициализация мобильного меню (важно для каталога)
+        // Инициализация анимаций каталога
         document.addEventListener('DOMContentLoaded', function() {
-            // Мобильное меню
-            const navToggle = document.querySelector('.nav-toggle');
-            const navMenu = document.querySelector('.nav-menu');
-            
-            if (navToggle && navMenu) {
-                navToggle.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    navMenu.classList.toggle('active');
-                    navToggle.classList.toggle('active');
-                });
-                
-                // Закрытие меню при клике на ссылку
-                const navLinks = document.querySelectorAll('.nav-link');
-                navLinks.forEach(link => {
-                    link.addEventListener('click', function() {
-                        navMenu.classList.remove('active');
-                        navToggle.classList.remove('active');
-                    });
-                });
-                
-                // Закрытие меню при клике вне его
-                document.addEventListener('click', function(e) {
-                    if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
-                        navMenu.classList.remove('active');
-                        navToggle.classList.remove('active');
-                    }
-                });
-            }
-
             // Анимация появления карточек при прокрутке
             const observerOptions = {
                 threshold: 0.1,
