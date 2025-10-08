@@ -23,9 +23,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-8d=s6_oo)3m%pwpfp%qix&vz3t280!%kw7+n!l&dj+(&jyukt3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['travellux.talipovpro.uz', 'www.travellux.talipovpro.uz', '84.46.247.15', '127.0.0.1', 'localhost', '*']
+ALLOWED_HOSTS = ['travellux.talipovpro.uz', 'www.travellux.talipovpro.uz', '84.46.247.15', '127.0.0.1', 'localhost']
+
+# HTTPS settings
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
 
 
 # Application definition
