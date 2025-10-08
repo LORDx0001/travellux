@@ -28,6 +28,11 @@ urlpatterns = [
 # Для разработки - обслуживание медиа файлов
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    # В DEBUG режиме также обслуживаем статические файлы
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# Обслуживание статических файлов в продакшене через Django (не рекомендуется для высокой нагрузки)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # Обработчики ошибок
 def handler404(request, exception):
