@@ -254,26 +254,17 @@ def logout_view(request):
 
 
 def register_view(request):
-    """Регистрация"""
-    if request.user.is_authenticated:
-        return redirect('profile')
-    
     if request.method == 'POST':
-        register_form = UserCreationForm(request.POST)
-        print(f"Данные регистрации: {request.POST}")  # Отладка
-        print(f"Форма регистрации валидна: {register_form.is_valid()}")  # Отладка
-        if register_form.is_valid():
-            user = register_form.save()
-            print(f"Создан пользователь: {user.username}")  # Отладка
-            UserProfile.objects.create(user=user)
-            login(request, user)
-            messages.success(request, 'Регистрация прошла успешно!')
-            return redirect('profile')
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Регистрация прошла успешно! Теперь вы можете войти.')
+            return redirect('auth')  # замените 'auth' на имя вашего url для входа
         else:
-            print(f"Ошибки регистрации: {register_form.errors}")  # Отладка
-            messages.error(request, 'Ошибка при регистрации. Проверьте введенные данные.')
-    
-    return render(request, 'travel/register.html')
+            messages.error(request, 'Пожалуйста, исправьте ошибки в форме.')
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'travel/register.html', {'form': form})
 
 
 def about(request):
