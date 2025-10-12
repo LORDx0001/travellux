@@ -20,8 +20,8 @@ class CustomUserCreationForm(UserCreationForm):
         return email
 
     def save(self, commit=True):
-        user = super(UserCreationForm, self).save(commit=False)
-        user.username = self.cleaned_data["email"]  # use email as username
+        user = super().save(commit=False)
+        user.username = self.cleaned_data["email"]  # используем email как username
         user.email = self.cleaned_data["email"]
         user.first_name = self.cleaned_data["first_name"]
         user.last_name = self.cleaned_data["last_name"]
